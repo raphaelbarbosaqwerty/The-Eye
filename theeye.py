@@ -67,15 +67,18 @@ def main():
         try:
             print('Scanning: {ip_target}'.format(ip_target=ip_target))
             discovered_ports = subprocess.check_output('nmap -p- --min-rate={timeout} -T4 {ip} | grep ^[0-9] | cut -d "/" -f 1 | tr r"\n" ","'.format(ip=ip_target, timeout=args.time), shell=True).decode('utf-8').rstrip(',')
-            output_information = subprocess.check_output('nmap -A -p{ports} {ip}'.format(ports=discovered_ports, ip=ip_target), shell=True).decode('utf-8')
             
-            try:
-                name_temp_file = save_host_information(output_information)
-                clean_host_information(name_temp_file.name)
-                prepare_send_notify(ip_target, name_temp_file.name, discovered_ports)
-                name_temp_file.close()
-            except Exception as e:
-                print('[-] Error on send the information to Slack: {e}'.format(e=e))
+            if(len(discovered_ports) > 0):
+                output_information = subprocess.check_output('nmap -A -p{ports} {ip}'.format(ports=discovered_ports, ip=ip_target), shell=True).decode('utf-8')
+                try:
+                    name_temp_file = save_host_information(output_information)
+                    clean_host_information(name_temp_file.name)
+                    prepare_send_notify(ip_target, name_temp_file.name, discovered_ports)
+                    name_temp_file.close()
+                except Exception as e:
+                    print('[-] Error on send the information to Slack: {e}'.format(e=e))
+            else:
+                prepare_send_notify(ip_target, 'No ports found', discovered_ports)
         except Exception as e:
             print('[-] Error on scan the target'.format(e=e))
         
@@ -89,9 +92,12 @@ def main():
         subprocess.call(["sed", "-i", "/NSE:/d;/NEXT SERVICE/d;/NSE Timing:/d;/Completed/d;/Starting/d;/Initiating/d;/Service detection/d;/Scanning/d;/Discovered/d;/SF/d;/unrecognized despite/d;/Nmap done/d;/Read data files/d;/Host is/d;/Scanned at/d;/NEXT SERVICE/d;/NSE Timing:/d",temp_file_name])
 
     def prepare_send_notify(ip_target, temp_file_name, discovered_ports):
-        host_information = open(temp_file_name, 'r')
-        file_read = host_information.read()
-        notify_slack(ip_target, file_read, discovered_ports)
+        if len(temp_file_name) > 15:
+            host_information = open(temp_file_name, 'r')
+            file_read = host_information.read()
+            notify_slack(ip_target, file_read, discovered_ports)
+        else:
+            notify_slack(ip_target, temp_file_name, discovered_ports)
 
     def notify_slack(ip_target, output_information, discovered_ports):
         try:
