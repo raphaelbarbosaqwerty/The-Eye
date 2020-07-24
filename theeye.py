@@ -102,7 +102,11 @@ def main():
     def notify_slack(ip_target, output_information, discovered_ports):
         try:
             webhook = posting_webhook
-            slack_data = {'text': 'Ports {discovered_ports} open on: {ip_target} {output_information}'.format(discovered_ports=discovered_ports, ip_target=ip_target, output_information=output_information)}
+            if len(output_information) > 15:
+                slack_data = {'text': 'Ports {discovered_ports} open on: {ip_target} {output_information}'.format(discovered_ports=discovered_ports, ip_target=ip_target, output_information=output_information)}
+            else:
+                slack_data = {'text': '{output_information} open on: {ip_target}'.format(discovered_ports=discovered_ports, ip_target=ip_target, output_information=output_information)}
+                
             requests.post(webhook, data=json.dumps(slack_data), headers={'Content-Type': 'application/json'})
         except Exception as e:
             print('[-] Error in send the information to Slack: {e}'.format(e=e)) 
