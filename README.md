@@ -66,6 +66,16 @@ TheEye are using the most basic command for Nmap.
   `nmap -A -p$openPorts ip_server`  
 3. Send all the information to Slack Workspace  
 
+## Images && Time
+1. Working  
+![Example1](https://raw.githubusercontent.com/raphaelbarbosaqwerty/The-Eye/master/Imgs/TheEyeExample2.png)  
+2. Time  
+![Example2](https://raw.githubusercontent.com/raphaelbarbosaqwerty/The-Eye/master/Imgs/TheEyeExample2.1Time.png)
+3. Push Notification to Slack Workspace  
+![Example3](https://github.com/raphaelbarbosaqwerty/The-Eye/blob/master/Imgs/TheeyeExample.png?raw=true)  
+4. In Slack Workspace  
+![Example4](https://raw.githubusercontent.com/raphaelbarbosaqwerty/The-Eye/master/Imgs/TheEyeExample3.png)  
+
 ## Feedback and Issues?
 Are welcome. Please feel free to file an issue on https://github.com/raphaelbarbosaqwerty/The-Eye/issues
 
