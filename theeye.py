@@ -60,7 +60,7 @@ def main():
                     queue_positions.put(socket.gethostbyname(line.strip()))
                 queue_positions.join()
         else:
-            print('Invalid file E.g: python3 theeye.py name_file_hosts.txt')
+            print('Invalid file E.g: python3 theeye.py -U name_file_hosts.txt')
             exit()
 
     def scan_host(ip_target):
