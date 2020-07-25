@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# TheEye - Multi-threader - Integration RustScan + Slack
+# TheEye - Multi-threader - Integration Nmap + Slack
 
 from pyfiglet import Figlet
 from config import *
