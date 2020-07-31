@@ -61,7 +61,6 @@ def main():
                         queue_positions.put(socket.gethostbyname(line.strip()))
                     except Exception:
                         print('[-] Host offline - {host}'.format(host=line))
-                        pass
                 queue_positions.join()
         else:
             print('Invalid file E.g: python3 theeye.py -U name_file_hosts.txt')
