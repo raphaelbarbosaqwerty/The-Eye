@@ -56,9 +56,12 @@ def main():
     def add_urls_list():
         if os.path.isfile(args.urlslist):
             with open(args.urlslist, 'r') as list_file:
-                for line in list_file:
-                    queue_positions.put(socket.gethostbyname(line.strip()))
-                queue_positions.join()
+                    try:
+                        for line in list_file:
+                            queue_positions.put(socket.gethostbyname(line.strip()))
+                        queue_positions.join()
+                    except Exception as e:
+                        print('[-] Host offline - {host} - error {e}'.format(host=line, e=e))
         else:
             print('Invalid file E.g: python3 theeye.py -U name_file_hosts.txt')
             exit()
